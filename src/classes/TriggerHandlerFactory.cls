@@ -69,18 +69,28 @@ public with sharing abstract class TriggerHandlerFactory
         }
     }
 
-    public static void handle(String handlerName)
+    public static Boolean handle(String handlerName)
     {
-        TriggerHandler handler = (TriggerHandler)Type.forName(handlerName).newInstance();
-
-        handle(handler);
+        return handle(Type.forName(handlerName));
     }
 
-    public static void handle(String namespace, String handlerName)
+    public static Boolean handle(String namespace, String handlerName)
     {
-        TriggerHandler handler = (TriggerHandler)Type.forName(namespace, handlerName).newInstance();
+        return handle(Type.forName(namespace, handlerName));
+    }
+
+    private static Boolean handle(Type handlerType)
+    {
+        if (handlerType == null)
+        {
+            return false;
+        }
+
+        TriggerHandler handler = (TriggerHandler)handlerType.newInstance();
 
         handle(handler);
+
+        return true;
     }
 
     private static void handle(TriggerHandler handler)
