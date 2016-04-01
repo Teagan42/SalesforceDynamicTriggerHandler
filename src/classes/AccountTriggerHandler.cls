@@ -1,4 +1,5 @@
 public class AccountTriggerHandler
+    extends TriggerHandler
 {
     public override void beforeInsert(List<SObjects> newObjects)
     {
