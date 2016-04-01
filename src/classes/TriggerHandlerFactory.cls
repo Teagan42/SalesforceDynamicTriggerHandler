@@ -46,25 +46,39 @@ public with sharing abstract class TriggerHandlerFactory
         {
             String handlerName = String.format(handlerNamePattern, new List<String> { objectName });
 
-            for (String namespace : namespaces)
+            try
             {
-                try
+                if (namespaces.isEmpty())
                 {
-                    if (String.isBlank(namespace))
+                    if (handle(handlerName))
                     {
-                        handle(handlerName);
+                        return;
                     }
-                    else
-                    {
-                        handle(namespace, handlerName);
-                    }
-
-                    return;
                 }
-                catch (TriggerHandlerException e)
+                else
                 {
-                    System.debug(e.getMessage());
+                    for (String namespace : namespaces)
+                    {
+                        if (String.isBlank(namespace))
+                        {
+                            if (handle(handlerName))
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            if (handle(namespace, handlerName))
+                            {
+                                return;
+                            }
+                        }
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                System.debug(e.getMessage());
             }
         }
     }
