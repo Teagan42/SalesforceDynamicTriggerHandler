@@ -3,8 +3,7 @@ public with sharing abstract class TriggerHandlerFactory
     private static final List<String> namespaces = new List<String>();
     private static final List<String> handlerNamePatterns = new List<String>
         {
-            null
-          , '{0}TriggerHandler'
+            '{0}TriggerHandler'
           , '{0}Handler'
         };
 
@@ -47,41 +46,65 @@ public with sharing abstract class TriggerHandlerFactory
         {
             String handlerName = String.format(handlerNamePattern, new List<String> { objectName });
 
-            for (String namespace : namespaces)
+            try
             {
-                try
+                if (namespaces.isEmpty())
                 {
-                    if (String.isBlank(namespace))
+                    if (handle(handlerName))
                     {
-                        handle(handlerName);
+                        return;
                     }
-                    else
-                    {
-                        handle(namespace, handlerName);
-                    }
-
-                    return;
                 }
-                catch (TriggerHandlerException e)
+                else
                 {
-                    System.debug(e.getMessage());
+                    for (String namespace : namespaces)
+                    {
+                        if (String.isBlank(namespace))
+                        {
+                            if (handle(handlerName))
+                            {
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            if (handle(namespace, handlerName))
+                            {
+                                return;
+                            }
+                        }
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                System.debug(e.getMessage());
             }
         }
     }
 
-    public static void handle(String handlerName)
+    public static Boolean handle(String handlerName)
     {
-        TriggerHandler handler = (TriggerHandler)Type.forName(handlerName).newInstance();
-
-        handle(handler);
+        return handle(Type.forName(handlerName));
     }
 
-    public static void handle(String namespace, String handlerName)
+    public static Boolean handle(String namespace, String handlerName)
     {
-        TriggerHandler handler = (TriggerHandler)Type.forName(namespace, handlerName).newInstance();
+        return handle(Type.forName(namespace, handlerName));
+    }
+
+    private static Boolean handle(Type handlerType)
+    {
+        if (handlerType == null)
+        {
+            return false;
+        }
+
+        TriggerHandler handler = (TriggerHandler)handlerType.newInstance();
 
         handle(handler);
+
+        return true;
     }
 
     private static void handle(TriggerHandler handler)

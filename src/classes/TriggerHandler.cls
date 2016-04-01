@@ -69,7 +69,13 @@ public abstract class TriggerHandler
 
         if (executionControl == null)
         {
-            executionControl = new TriggerHandlerExecution__c(Name = objectName);
+            executionControl = new TriggerHandlerExecution__c(
+                Name = objectName
+              , Insert__c = true
+              , Update__c = true
+              , Delete__c = true
+              , Undelete__c = true
+            );
         }
 
         return executionControl;
