@@ -3,8 +3,7 @@ public with sharing abstract class TriggerHandlerFactory
     private static final List<String> namespaces = new List<String>();
     private static final List<String> handlerNamePatterns = new List<String>
         {
-            null
-          , '{0}TriggerHandler'
+            '{0}TriggerHandler'
           , '{0}Handler'
         };
 
