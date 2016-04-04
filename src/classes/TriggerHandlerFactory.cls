@@ -1,6 +1,11 @@
 public with sharing abstract class TriggerHandlerFactory
 {
     private static final List<String> namespaces = new List<String>();
+    private static final List<TriggerHandlerPreprocessor__c> preprocessors = [
+            SELECT Class_Name__c
+                 , Namespace__c
+            FROM TriggerHandlerPreprocessor__c
+        ];
     private static final List<String> handlerNamePatterns = new List<String>
         {
             '{0}TriggerHandler'
