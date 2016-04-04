@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customSettingsType>List</customSettingsType>
+    <enableFeeds>false</enableFeeds>
+    <fields>
+        <fullName>Class_Name__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Preprocessor Class Name</label>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <length>255</length>
+    </fields>
+    <fields>
+        <fullName>Namespace__c</fullName>
+        <defaultValue>true</defaultValue>
+        <externalId>false</externalId>
+        <label>Preprocessor Class Namespace</label>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <length>255</length>
+    </fields>
+    <label>Trigger Handler Preprocessor</label>
+    <visibility>Public</visibility>
+</CustomObject>
