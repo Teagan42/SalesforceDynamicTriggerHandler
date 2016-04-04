@@ -77,6 +77,8 @@ public with sharing abstract class TriggerHandlerFactory
             return;
         }
 
+        preprocess();
+
         SObjectType objectType;
 
         if (Trigger.isDelete)
