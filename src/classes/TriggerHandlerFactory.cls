@@ -22,6 +22,44 @@ public with sharing abstract class TriggerHandlerFactory
         handlerNamePatterns.add(handlerNamePattern);
     }
 
+    private static List<ITriggerHandlerPreProcessor> getPreProcessors()
+    {
+        List<ITriggerHandlerPreProcessor> result = new List<ITriggerHandlerPreProcessor>();
+
+        for (TriggerHandlerPreprocessor__c preprocessor : preprocessors)
+        {
+            try
+            {
+                Type preprocessorType;
+                if (!String.isBlank(preprocessor.Namespace__c))
+                {
+                    preprocessorType = Type.forName(preprocessor.Namespace__c, preprocessor.Class_Name__c);
+                }
+                else
+                {
+                    preprocessorType = Type.forName(preprocessor.Class_Name__c);
+                }
+
+                if (preprocessorType == null)
+                {
+                    continue;
+                }
+
+
+                ITriggerHandlerPreProcessor preprocessorHandler = (ITriggerHandlerPreProcessor)preprocessorType.newInstance();
+
+                result.add(preprocessorHandler);
+            }
+            catch (Exception e)
+            {
+                System.debug('Unable to create preprocessor: ' + preprocessor.Class_Name__c);
+                System.debug(e.getMessage());
+            }
+        }
+
+        return result;
+    }
+
     public static void handle()
     {
         if (!Trigger.isExecuting)
