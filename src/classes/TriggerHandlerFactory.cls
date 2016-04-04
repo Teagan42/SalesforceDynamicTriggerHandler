@@ -60,6 +60,16 @@ public with sharing abstract class TriggerHandlerFactory
         return result;
     }
 
+    private static void preprocess()
+    {
+        List<ITriggerHandlerPreProcessor> preprocessorHandlers = getPreProcessors();
+
+        for (ITriggerHandlerPreProcessor preprocessorHandler : preprocessorHandlers)
+        {
+            preprocessorHandler.preprocess();
+        }
+    }
+
     public static void handle()
     {
         if (!Trigger.isExecuting)
