@@ -93,7 +93,7 @@ public with sharing abstract class TriggerHandlerFactory
         handle(objectType);
     }
 
-    public static void handle(SObjectType objectType)
+    private static void handle(SObjectType objectType)
     {
         String objectName = objectType.getDescribe().getName();
 
@@ -138,12 +138,12 @@ public with sharing abstract class TriggerHandlerFactory
         }
     }
 
-    public static Boolean handle(String handlerName)
+    private static Boolean handle(String handlerName)
     {
         return handle(Type.forName(handlerName));
     }
 
-    public static Boolean handle(String namespace, String handlerName)
+    private static Boolean handle(String namespace, String handlerName)
     {
         return handle(Type.forName(namespace, handlerName));
     }
